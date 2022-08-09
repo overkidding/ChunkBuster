@@ -44,7 +44,7 @@ public class ChunkBusterListener implements Listener {
                 event.setCancelled(true);
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         configuration.getString("SETTINGS.MESSAGES.COOLDOWN")
-                        .replace("%cooldown%", String.valueOf(timeLeft))
+                        .replace("%cooldown%", String.valueOf(secondsLeft))
                         .replace("%context%", secondsLeft == 1 ? "" : "s")
                 ));
                 return;
