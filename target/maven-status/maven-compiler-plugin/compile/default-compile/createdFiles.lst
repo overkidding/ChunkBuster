@@ -1,6 +1,7 @@
 me/overkidding/chunkbuster/utils/XSound$1.class
 me/overkidding/chunkbuster/utils/ReflectionUtils$1.class
 me/overkidding/chunkbuster/command/ChunkBusterCommand.class
+me/overkidding/chunkbuster/modules/ChunkBust.class
 me/overkidding/chunkbuster/utils/XItemStack$UnknownMaterialCondition.class
 me/overkidding/chunkbuster/utils/XSound$Record.class
 me/overkidding/chunkbuster/utils/XPotion.class

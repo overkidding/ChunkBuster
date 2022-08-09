@@ -1,7 +1,7 @@
 package me.overkidding.chunkbuster.command;
 
 import me.overkidding.chunkbuster.ChunkBuster;
-import me.overkidding.chunkbuster.utils.XItemStack;
+import me.overkidding.chunkbuster.modules.ChunkBust;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -42,7 +42,7 @@ public class ChunkBusterCommand implements CommandExecutor {
                 }
             }
 
-            ItemStack chunkBusterItem = XItemStack.deserialize(ChunkBuster.getInstance().getConfig().getConfigurationSection("ITEM"), s -> ChatColor.translateAlternateColorCodes('&', s)).clone();
+            ItemStack chunkBusterItem = ChunkBust.getItem().clone();
             chunkBusterItem.setAmount(amount);
             target.getInventory().addItem(chunkBusterItem);
             target.updateInventory();

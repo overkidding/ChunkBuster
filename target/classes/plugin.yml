@@ -4,8 +4,6 @@ main: me.overkidding.chunkbuster.ChunkBuster
 api-version: 1.13
 authors: [ overkidding ]
 description: Destroys the chunk the player is standing on.
-depend:
-  - WorldGuard
 commands:
   chunkbuster:
     description: Main command

@@ -2,6 +2,7 @@
 /home/overkidding/Documents/GitHub/ChunkBuster/src/main/java/me/overkidding/chunkbuster/workload/Workload.java
 /home/overkidding/Documents/GitHub/ChunkBuster/src/main/java/me/overkidding/chunkbuster/workload/WorkloadRunnable.java
 /home/overkidding/Documents/GitHub/ChunkBuster/src/main/java/me/overkidding/chunkbuster/workload/impl/ChunkBustBlock.java
+/home/overkidding/Documents/GitHub/ChunkBuster/src/main/java/me/overkidding/chunkbuster/modules/ChunkBust.java
 /home/overkidding/Documents/GitHub/ChunkBuster/src/main/java/me/overkidding/chunkbuster/workload/filler/impl/DistributedFiller.java
 /home/overkidding/Documents/GitHub/ChunkBuster/src/main/java/me/overkidding/chunkbuster/utils/XMaterial.java
 /home/overkidding/Documents/GitHub/ChunkBuster/src/main/java/me/overkidding/chunkbuster/events/ChunkBustPreStartEvent.java

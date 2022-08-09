@@ -9,6 +9,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 public class DistributedFiller implements ChunkFiller {
 
     private final WorkloadRunnable runnable;
+    private final FileConfiguration configuration;
 
     @Override
     public void fill(Chunk chunk, Material material) {
@@ -24,6 +26,7 @@ public class DistributedFiller implements ChunkFiller {
             ChunkBustBlock chunkBustBlock = new ChunkBustBlock(block.getLocation(), material);
             this.runnable.addWorkLoad(chunkBustBlock);
         });
+        runnable.runTaskTimer(ChunkBuster.getInstance(), 20L * configuration.getInt("SETTINGS.DELAY_BEFORE_START"), 1L);
     }
 
     private List<Block> getBlocks(Chunk chunk) {
