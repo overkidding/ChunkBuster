@@ -1,15 +1,10 @@
 package me.overkidding.chunkbuster.listener;
 
-import com.sk89q.worldedit.util.Location;
-import com.sk89q.worldedit.world.World;
-import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
-import com.sk89q.worldguard.protection.regions.RegionQuery;
 import me.overkidding.chunkbuster.ChunkBuster;
+import me.overkidding.chunkbuster.events.ChunkBustPreStartEvent;
 import me.overkidding.chunkbuster.utils.XItemStack;
 import me.overkidding.chunkbuster.workload.filler.impl.DistributedFiller;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
@@ -47,13 +42,13 @@ public class ChunkBusterListener implements Listener {
                 player.sendMessage(ChatColor.RED + "You need to click on a block to let chunk buster do his work!");
                 return;
             }
-            LocalPlayer localPlayer = WorldGuardPlugin.inst().wrapPlayer(player);
-            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-            RegionQuery query = container.createQuery();
-            World world = localPlayer.getWorld();
-            Location loc = new Location(world, clickedBlock.getX(), clickedBlock.getY(), clickedBlock.getZ());
-            if(!query.testState(loc, localPlayer, ChunkBuster.CHUNK_BUSTING_FLAG)){
-                player.sendMessage(ChatColor.RED + "You can't chunk bust a protected region!");
+
+            Chunk chunk = clickedBlock.getChunk();
+
+            ChunkBustPreStartEvent preStartEvent = new ChunkBustPreStartEvent(player, clickedBlock.getLocation(), chunk);
+            Bukkit.getPluginManager().callEvent(preStartEvent);
+            if(preStartEvent.isCancelled()){
+                player.sendMessage(ChatColor.RED + "Chunk busting has been cancelled!");
                 return;
             }
 
@@ -74,7 +69,6 @@ public class ChunkBusterListener implements Listener {
             ItemStack handItem = player.getItemInHand();
             handItem.setAmount(handItem.getAmount() - 1);
             player.setItemInHand(handItem);
-            Chunk chunk = clickedBlock.getChunk();
             new DistributedFiller(ChunkBuster.getInstance().getWorkloadRunnable()).fill(chunk, Material.AIR);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     configuration.getString("SETTINGS.MESSAGES.START")
