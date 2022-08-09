@@ -15,8 +15,8 @@ ITEM:
     - ""
 SETTINGS:
   SINGLE_WORK_LOAD: false #This option is not available at the moment.
-  MIN_HEIGHT: -62 # PUT AT 0 IF YOU ARE ON 1.8!
-  MAX_HEIGHT: 256
+  MIN_HEIGHT: -63 # PUT AT 0 IF YOU ARE ON 1.8 (to get better performances)!
+  MAX_HEIGHT: 320 # PUT THE VALUE THAT YOU'VE PUT IN THE SPIGOT CONFIGS
   COOLDOWN: 10 #Cooldown time in seconds (0 or -1 to disable)
   DELAY_BEFORE_START: 5 #Delay in seconds (0 to disable)
   MESSAGES:

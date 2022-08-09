@@ -13,6 +13,6 @@ public class ChunkBustBlock implements Workload {
 
     @Override
     public void compute() {
-        location.getBlock().setType(material);
+        location.getBlock().setType(material, false);
     }
 }

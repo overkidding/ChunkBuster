@@ -22,7 +22,7 @@ public class DistributedFiller implements ChunkFiller {
 
     @Override
     public void fill(Chunk chunk, Material material) {
-        getBlocks(chunk).forEach(block ->{
+        getBlocks(chunk).forEach(block -> {
             ChunkBustBlock chunkBustBlock = new ChunkBustBlock(block.getLocation(), material);
             this.runnable.addWorkLoad(chunkBustBlock);
         });
@@ -32,19 +32,18 @@ public class DistributedFiller implements ChunkFiller {
     private List<Block> getBlocks(Chunk chunk) {
         List<Block> blocks = new ArrayList<>();
 
-        int bx = chunk.getX()<<4;
-        int bz = chunk.getZ()<<4;
+        int bx = chunk.getX() << 4;
+        int bz = chunk.getZ() << 4;
 
         int minY = ChunkBuster.getInstance().getConfig().getInt("SETTINGS.MIN_HEIGHT");
         int maxY = ChunkBuster.getInstance().getConfig().getInt("SETTINGS.MAX_HEIGHT");
 
         World world = chunk.getWorld();
-
-        for(int xx = bx; xx < bx+16; xx++) {
-            for(int zz = bz; zz < bz+16; zz++) {
-                for(int yy = minY; yy <= maxY; yy++) {
-                    Block block = world.getBlockAt(xx,yy,zz);
-                    if(block.getType() != Material.AIR && block.getType() != Material.BEDROCK) {
+        for (int xx = bx; xx < bx + 16; xx++) {
+            for (int yy = minY; yy <= maxY; yy++) {
+                for (int zz = bz; zz < bz + 16; zz++) {
+                    Block block = world.getBlockAt(xx, yy, zz);
+                    if (block.getType() != Material.AIR && block.getType() != Material.BEDROCK) {
                         blocks.add(block);
                     }
                 }

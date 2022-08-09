@@ -1,8 +1,10 @@
 package me.overkidding.chunkbuster.modules;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import me.overkidding.chunkbuster.ChunkBuster;
 import me.overkidding.chunkbuster.events.ChunkBustPreStartEvent;
+import me.overkidding.chunkbuster.utils.Pair;
 import me.overkidding.chunkbuster.utils.XItemStack;
 import me.overkidding.chunkbuster.workload.WorkloadRunnable;
 import me.overkidding.chunkbuster.workload.filler.impl.DistributedFiller;
@@ -11,20 +13,21 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 public class ChunkBust {
 
-    private static final FileConfiguration configuration = ChunkBuster.getInstance().getConfig();
+    @Setter private static FileConfiguration configuration = ChunkBuster.getInstance().getConfig();
+    private static final List<Pair<Integer, Integer>> currentChunkBusts = new ArrayList<>();
     private final Map<UUID, Long> coolDowns = new HashMap<>();
 
     private final Player player;
     private final Location clicked;
     private final Chunk chunk;
+
+
 
     private final WorkloadRunnable runnable = new WorkloadRunnable(this);
 
@@ -33,6 +36,12 @@ public class ChunkBust {
         Bukkit.getPluginManager().callEvent(preStartEvent);
         if(preStartEvent.isCancelled()){
             player.sendMessage(ChatColor.RED + "Chunk busting has been cancelled!");
+            player.updateInventory();
+            return;
+        }
+
+        if(currentChunkBusts.contains(new Pair<>(chunk.getX(), chunk.getZ()))){
+            player.sendMessage(ChatColor.RED + "A chunk bust is already starting in this area!");
             player.updateInventory();
             return;
         }
@@ -46,6 +55,7 @@ public class ChunkBust {
                             .replace("%context%", secondsLeft == 1 ? "" : "s")
             ));
         }
+        currentChunkBusts.add(new Pair<>(chunk.getX(), chunk.getZ()));
         int coolDown = configuration.getInt("SETTINGS.COOLDOWN");
         coolDowns.put(player.getUniqueId(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(coolDown));
         ItemStack handItem = player.getItemInHand();
@@ -57,6 +67,7 @@ public class ChunkBust {
 
     public void end(){
         runnable.cancel();
+        currentChunkBusts.remove(new Pair<>(chunk.getX(), chunk.getZ()));
         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 configuration.getString("SETTINGS.MESSAGES.FINISH")
                         .replace("%x%", clicked.getBlockX()+"")
