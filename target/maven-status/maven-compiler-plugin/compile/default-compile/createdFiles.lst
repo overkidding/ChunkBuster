@@ -17,6 +17,7 @@ me/overkidding/chunkbuster/utils/XMaterial$Data.class
 me/overkidding/chunkbuster/workload/impl/ChunkBustBlock.class
 me/overkidding/chunkbuster/utils/SkullCacheListener.class
 me/overkidding/chunkbuster/workload/filler/ChunkFiller.class
+me/overkidding/chunkbuster/events/ChunkBustPreStartEvent.class
 me/overkidding/chunkbuster/workload/Workload.class
 me/overkidding/chunkbuster/utils/SkullUtils.class
 me/overkidding/chunkbuster/utils/ReflectionUtils$VersionHandler.class

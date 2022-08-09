@@ -1,5 +1,6 @@
 package me.overkidding.chunkbuster.events;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -9,6 +10,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 @RequiredArgsConstructor
+@Getter
 public class ChunkBustPreStartEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
