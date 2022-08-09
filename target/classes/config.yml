@@ -1,0 +1,22 @@
+ITEM:
+  material: BEACON
+  damage: 0
+  amount: 1
+  name: "&8» &c&lChunk Buster &8«"
+  lore:
+    - ""
+    - "&fPlace me to mine out"
+    - "&fan entire Chunk from"
+    - "&fSky limit to Bedrock."
+    - ""
+    - "&c&lNOTE"
+    - "&7You may only place &f1"
+    - "&7Chunk buster every &f10 &7seconds."
+    - ""
+SETTINGS:
+  MIN_HEIGHT: -62 # PUT AT 0 IF YOU ARE ON 1.8!
+  MAX_HEIGHT: 256
+  COOLDOWN: 10 #Cooldown time in seconds
+  MESSAGES:
+    START: "&c&lChunkBuster &8➼ &7Your ChunkBuster task is now starting."
+    COOLDOWN: "&c&lChunkBuster &8➼ &cYou cannot place another ChunkBuster for %cooldown% second%context%." #Context adds 's' if seconds equals to 0 or higher than 1

@@ -41,7 +41,7 @@ public class DistributedFiller implements ChunkFiller {
             for(int zz = bz; zz < bz+16; zz++) {
                 for(int yy = minY; yy <= maxY; yy++) {
                     Block block = world.getBlockAt(xx,yy,zz);
-                    if(block.getType() != Material.AIR) {
+                    if(block.getType() != Material.AIR && block.getType() != Material.BEDROCK) {
                         blocks.add(block);
                     }
                 }
