@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 public class ChunkBusterCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!sender.hasPermission("chunkbuster.give")){
-            sender.sendMessage(ChatColor.RED + "Error: No permission.");
+        if(!sender.hasPermission("chunkbuster.admin")){
+            sender.sendMessage(ChatColor.YELLOW + "This server is using ChunkBuster" + ChatColor.WHITE + " v" + ChunkBuster.getInstance().getDescription().getVersion() + " by " + ChatColor.WHITE + "overkidding");
             return true;
         }
         if(args.length == 0){
@@ -23,7 +23,7 @@ public class ChunkBusterCommand implements CommandExecutor {
         }
         if(args[0].equalsIgnoreCase("give")){
             if(args.length < 2){
-                sender.sendMessage(ChatColor.RED + "Usage: /chunkbuster give (player)");
+                sender.sendMessage(ChatColor.RED + "Usage: /chunkbuster give (player) (amount)");
                 return true;
             }
             Player target = Bukkit.getPlayerExact(args[1]);
@@ -32,11 +32,24 @@ public class ChunkBusterCommand implements CommandExecutor {
                 return true;
             }
 
-            ItemStack chunkBusterItem = XItemStack.deserialize(ChunkBuster.getInstance().getConfig().getConfigurationSection("ITEM"), s -> ChatColor.translateAlternateColorCodes('&', s));
+            int amount = 1;
+            if(args.length > 2){
+                try{
+                    amount = Integer.parseInt(args[2]);
+                }catch (Exception ex){
+                    sender.sendMessage(ChatColor.RED + "Insert a valid amount.");
+                    return true;
+                }
+            }
+
+            ItemStack chunkBusterItem = XItemStack.deserialize(ChunkBuster.getInstance().getConfig().getConfigurationSection("ITEM"), s -> ChatColor.translateAlternateColorCodes('&', s)).clone();
+            chunkBusterItem.setAmount(amount);
             target.getInventory().addItem(chunkBusterItem);
             target.updateInventory();
+            sender.sendMessage(ChatColor.GREEN + "Gave x" + amount + " chunkbuster" + (amount == 1 ? "" : "s") + " to " + target.getName() + ".");
         }else if(args[0].equalsIgnoreCase("reload")){
             ChunkBuster.getInstance().reloadConfig();
+            sender.sendMessage(ChatColor.GREEN + "Reloaded ChunkBuster.");
         }else{
             sender.sendMessage(ChatColor.RED + "Usage: /chunkbuster <give (player):reload>");
         }
