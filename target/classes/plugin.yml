@@ -1,0 +1,9 @@
+name: ChunkBuster
+version: '1.0'
+main: me.overkidding.chunkbuster.ChunkBuster
+api-version: 1.13
+authors: [ overkidding ]
+description: Destroys the chunk the player is standing on.
+commands:
+  chunkbuster:
+    description: Main command
