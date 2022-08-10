@@ -87,7 +87,7 @@ public class ChunkBust {
     }
 
     public int getChunkX(){
-        return (chunk.getX() << 4) + 1;
+        return (chunk.getX() << 4) - 1;
     }
 
     public int getChunkZ(){
