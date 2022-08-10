@@ -78,7 +78,7 @@ public class ChunkBust {
                         .replace("%x%", clicked.getBlockX()+"")
                         .replace("%z%", clicked.getBlockZ() + "")
                         .replace("%totalBlocks%", totalBlocks + "")
-                        .replace("%time%", (TimeUnit.MILLISECONDS.toSeconds(end - start) - configuration.getInt("SETTINGS.DELAY_BEFORE_START")) + "")
+                        .replace("%time%", Math.max(0, TimeUnit.MILLISECONDS.toSeconds(end - start) - configuration.getInt("SETTINGS.DELAY_BEFORE_START")) + "")
         ));
     }
 
@@ -87,11 +87,11 @@ public class ChunkBust {
     }
 
     public int getChunkX(){
-        return (chunk.getX() << 4) - 1;
+        return chunk.getX();
     }
 
     public int getChunkZ(){
-        return (chunk.getZ() << 4) - 1;
+        return chunk.getZ();
     }
 
     public int getDelayBeforeStart(){

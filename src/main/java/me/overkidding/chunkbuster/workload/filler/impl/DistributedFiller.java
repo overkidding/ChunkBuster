@@ -27,26 +27,37 @@ public class DistributedFiller implements ChunkFiller {
             ChunkBustBlock chunkBustBlock = new ChunkBustBlock(block.getLocation(), material, bust.isPhysics());
             runnable.addWorkLoad(chunkBustBlock);
         });
-        bust.setTotalBlocks(blocks.size());
-        runnable.runTaskTimer(ChunkBuster.getInstance(), 20L * bust.getDelayBeforeStart(), 1L);
+
+        int totalBlocks = blocks.size();
+        bust.setTotalBlocks(totalBlocks);
+
+        if(totalBlocks > 0) {
+            runnable.runTaskTimer(ChunkBuster.getInstance(), 20L * bust.getDelayBeforeStart(), 1L);
+        }else{
+            bust.end();
+        }
     }
 
     private List<Block> getBlocks(Chunk chunk) {
         List<Block> blocks = new ArrayList<>();
 
-        final int minX = (chunk.getX() << 4) - 1;
-        final int minZ = (chunk.getZ() << 4) - 1;
+        World world = chunk.getWorld();
 
-        final int maxX = minX + 15;
-        final int maxZ = minZ + 15;
+        int cx = bust.getChunkX(), cz = bust.getChunkZ();
+
+        int minX = cx * 16;
+        int minZ = cz * 16;
+
+        int maxX = cx < 0 ? validate(cx, (minX + 15) - 1) : minX + 15;
+        int maxZ = cz < 0 ? validate(cz, (minZ + 15) - 1) : minZ + 15;
 
         int minY = bust.getMinHeight();
         int maxY = bust.getMaxHeight();
 
-        World world = chunk.getWorld();
         for (int x = minX; x <= maxX; ++x) {
             for (int y = minY; y <= maxY; ++y) {
                 for (int z = minZ; z <= maxZ; ++z) {
+
                     Block block = world.getBlockAt(x, y, z);
                     if (block.getType() != Material.AIR && block.getType() != Material.BEDROCK) {
                         blocks.add(block);
@@ -56,5 +67,18 @@ public class DistributedFiller implements ChunkFiller {
         }
 
         return blocks;
+    }
+
+    private int validate(int shouldBe, int current){
+        if((current >> 4) != shouldBe){
+            int prev = current - 1, next = current + 1;
+            if((next >> 4) == shouldBe){
+                return next;
+            }else{
+                return prev;
+            }
+        }else {
+            return current;
+        }
     }
 }
