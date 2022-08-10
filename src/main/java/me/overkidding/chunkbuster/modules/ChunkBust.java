@@ -40,7 +40,7 @@ public class ChunkBust {
             return;
         }
 
-        if(currentChunkBusts.contains(new Pair<>(chunk.getX(), chunk.getZ()))){
+        if(currentChunkBusts.contains(new Pair<>(getChunkX(), getChunkZ()))){
             player.sendMessage(ChatColor.RED + "A chunk bust is already starting in this area!");
             player.updateInventory();
             return;
@@ -55,7 +55,7 @@ public class ChunkBust {
                             .replace("%context%", secondsLeft == 1 ? "" : "s")
             ));
         }
-        currentChunkBusts.add(new Pair<>(chunk.getX(), chunk.getZ()));
+        currentChunkBusts.add(new Pair<>(getChunkX(), getChunkZ()));
         int coolDown = configuration.getInt("SETTINGS.COOLDOWN");
         coolDowns.put(player.getUniqueId(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(coolDown));
         ItemStack handItem = player.getItemInHand();
@@ -69,7 +69,7 @@ public class ChunkBust {
     public void end(){
         runnable.cancel();
         end = System.currentTimeMillis();
-        currentChunkBusts.remove(new Pair<>(chunk.getX(), chunk.getZ()));
+        currentChunkBusts.remove(new Pair<>(getChunkX(), getChunkZ()));
         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 configuration.getString("SETTINGS.MESSAGES.FINISH")
                         .replace("%x%", clicked.getBlockX()+"")
@@ -80,6 +80,14 @@ public class ChunkBust {
 
     public static ItemStack getItem(){
         return XItemStack.deserialize(configuration.getConfigurationSection("ITEM"), s -> ChatColor.translateAlternateColorCodes('&', s));
+    }
+
+    public int getChunkX(){
+        return (chunk.getX() << 4) - 1;
+    }
+
+    public int getChunkZ(){
+        return (chunk.getZ() << 4) - 1;
     }
 
 }
