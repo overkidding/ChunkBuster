@@ -5,6 +5,7 @@ import me.overkidding.chunkbuster.ChunkBuster;
 import me.overkidding.chunkbuster.workload.WorkloadRunnable;
 import me.overkidding.chunkbuster.workload.filler.ChunkFiller;
 import me.overkidding.chunkbuster.workload.impl.ChunkBustBlock;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -32,10 +33,13 @@ public class DistributedFiller implements ChunkFiller {
     private List<Block> getBlocks(Chunk chunk) {
         List<Block> blocks = new ArrayList<>();
 
-        final int minX = chunk.getX() << 4;
-        final int minZ = chunk.getZ() << 4;
-        final int maxX = minX | 15;
-        final int maxZ = minZ | 15;
+        final int minX = (chunk.getX() << 4) - 1;
+        final int minZ = (chunk.getZ() << 4) - 1;
+
+        final int maxX = minX + 15;
+        final int maxZ = minZ + 15;
+
+        Bukkit.broadcastMessage(chunk.getX() + " " + chunk.getZ() + " " + maxX + " " + maxZ + " " + minX + " " + minZ);
 
         int minY = ChunkBuster.getInstance().getConfig().getInt("SETTINGS.MIN_HEIGHT");
         int maxY = ChunkBuster.getInstance().getConfig().getInt("SETTINGS.MAX_HEIGHT");
