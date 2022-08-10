@@ -94,4 +94,16 @@ public class ChunkBust {
         return (chunk.getZ() << 4) - 1;
     }
 
+    public int getDelayBeforeStart(){
+        return configuration.getInt("SETTINGS.DELAY_BEFORE_START");
+    }
+
+    public int getMinHeight(){
+        return configuration.getInt("SETTINGS.MIN_HEIGHT");
+    }
+
+    public int getMaxHeight(){
+        return configuration.getInt("SETTINGS.MAX_HEIGHT");
+    }
+
 }

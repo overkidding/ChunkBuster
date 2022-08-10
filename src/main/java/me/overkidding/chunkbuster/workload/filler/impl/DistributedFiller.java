@@ -3,6 +3,7 @@ package me.overkidding.chunkbuster.workload.filler.impl;
 import lombok.AllArgsConstructor;
 import me.overkidding.chunkbuster.ChunkBuster;
 import me.overkidding.chunkbuster.modules.ChunkBust;
+import me.overkidding.chunkbuster.workload.WorkloadRunnable;
 import me.overkidding.chunkbuster.workload.filler.ChunkFiller;
 import me.overkidding.chunkbuster.workload.impl.ChunkBustBlock;
 import org.bukkit.Chunk;
@@ -21,12 +22,13 @@ public class DistributedFiller implements ChunkFiller {
     @Override
     public void fill(Chunk chunk, Material material) {
         List<Block> blocks = getBlocks(chunk);
+        WorkloadRunnable runnable = bust.getRunnable();
         blocks.forEach(block -> {
             ChunkBustBlock chunkBustBlock = new ChunkBustBlock(block.getLocation(), material);
-            bust.getRunnable().addWorkLoad(chunkBustBlock);
+            runnable.addWorkLoad(chunkBustBlock);
         });
         bust.setTotalBlocks(blocks.size());
-        bust.getRunnable().runTaskTimer(ChunkBuster.getInstance(), 20L * ChunkBust.getConfiguration().getInt("SETTINGS.DELAY_BEFORE_START"), 1L);
+        runnable.runTaskTimer(ChunkBuster.getInstance(), 20L * bust.getDelayBeforeStart(), 1L);
     }
 
     private List<Block> getBlocks(Chunk chunk) {
@@ -38,8 +40,8 @@ public class DistributedFiller implements ChunkFiller {
         final int maxX = minX + 15;
         final int maxZ = minZ + 15;
 
-        int minY = ChunkBuster.getInstance().getConfig().getInt("SETTINGS.MIN_HEIGHT");
-        int maxY = ChunkBuster.getInstance().getConfig().getInt("SETTINGS.MAX_HEIGHT");
+        int minY = bust.getMinHeight();
+        int maxY = bust.getMaxHeight();
 
         World world = chunk.getWorld();
         for (int x = minX; x <= maxX; ++x) {
