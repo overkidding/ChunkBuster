@@ -24,7 +24,7 @@ public class DistributedFiller implements ChunkFiller {
         List<Block> blocks = getBlocks(chunk);
         WorkloadRunnable runnable = bust.getRunnable();
         blocks.forEach(block -> {
-            ChunkBustBlock chunkBustBlock = new ChunkBustBlock(block.getLocation(), material);
+            ChunkBustBlock chunkBustBlock = new ChunkBustBlock(block.getLocation(), material, bust.isPhysics());
             runnable.addWorkLoad(chunkBustBlock);
         });
         bust.setTotalBlocks(blocks.size());

@@ -87,7 +87,7 @@ public class ChunkBust {
     }
 
     public int getChunkX(){
-        return (chunk.getX() << 4) - 1;
+        return (chunk.getX() << 4) + 1;
     }
 
     public int getChunkZ(){
@@ -96,6 +96,10 @@ public class ChunkBust {
 
     public int getDelayBeforeStart(){
         return configuration.getInt("SETTINGS.DELAY_BEFORE_START");
+    }
+
+    public boolean isPhysics(){
+        return configuration.getBoolean("SETTINGS.APPLY_PHYSICS");
     }
 
     public int getMinHeight(){
