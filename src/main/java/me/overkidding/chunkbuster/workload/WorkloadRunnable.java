@@ -10,8 +10,7 @@ import java.util.Deque;
 @RequiredArgsConstructor
 public class WorkloadRunnable extends BukkitRunnable {
 
-    private static final double MAX_MILLIS_PER_TICK = 0.25;
-    private static final int MAX_NANOS_PER_TICK = (int) (MAX_MILLIS_PER_TICK * 1E6);
+    private final double MAX_MILLIS_PER_TICK;
 
     private final ChunkBust chunkBust;
 
@@ -23,10 +22,9 @@ public class WorkloadRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        long stopTime = System.nanoTime() + MAX_NANOS_PER_TICK;
+        double stopTime = System.nanoTime() + (MAX_MILLIS_PER_TICK * 1E6);
 
         Workload nextLoad;
-
 
         while(System.nanoTime() <= stopTime && (nextLoad = this.workLoadDeque.poll()) != null){
             nextLoad.compute();
