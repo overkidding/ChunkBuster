@@ -27,7 +27,7 @@ public class ChunkBust {
     private final Location clicked;
     private final Chunk chunk;
 
-
+    private long start = -1, end = -1;
 
     private final WorkloadRunnable runnable = new WorkloadRunnable(this);
 
@@ -61,17 +61,20 @@ public class ChunkBust {
         ItemStack handItem = player.getItemInHand();
         handItem.setAmount(handItem.getAmount() - 1);
         player.setItemInHand(handItem);
+        start = System.currentTimeMillis();
         new DistributedFiller(runnable, configuration).fill(chunk, Material.AIR);
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', configuration.getString("SETTINGS.MESSAGES.START")));
     }
 
     public void end(){
         runnable.cancel();
+        end = System.currentTimeMillis();
         currentChunkBusts.remove(new Pair<>(chunk.getX(), chunk.getZ()));
         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 configuration.getString("SETTINGS.MESSAGES.FINISH")
                         .replace("%x%", clicked.getBlockX()+"")
                         .replace("%z%", clicked.getBlockZ() + "")
+                        .replace("%time%", TimeUnit.MILLISECONDS.toSeconds(end - start) + "")
         ));
     }
 

@@ -32,17 +32,19 @@ public class DistributedFiller implements ChunkFiller {
     private List<Block> getBlocks(Chunk chunk) {
         List<Block> blocks = new ArrayList<>();
 
-        int bx = chunk.getX() << 4;
-        int bz = chunk.getZ() << 4;
+        final int minX = chunk.getX() << 4;
+        final int minZ = chunk.getZ() << 4;
+        final int maxX = minX | 15;
+        final int maxZ = minZ | 15;
 
         int minY = ChunkBuster.getInstance().getConfig().getInt("SETTINGS.MIN_HEIGHT");
         int maxY = ChunkBuster.getInstance().getConfig().getInt("SETTINGS.MAX_HEIGHT");
 
         World world = chunk.getWorld();
-        for (int xx = bx; xx < bx + 16; xx++) {
-            for (int yy = minY; yy <= maxY; yy++) {
-                for (int zz = bz; zz < bz + 16; zz++) {
-                    Block block = world.getBlockAt(xx, yy, zz);
+        for (int x = minX; x <= maxX; ++x) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; ++z) {
+                    Block block = world.getBlockAt(x, y, z);
                     if (block.getType() != Material.AIR && block.getType() != Material.BEDROCK) {
                         blocks.add(block);
                     }
