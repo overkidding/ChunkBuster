@@ -31,11 +31,7 @@ public class DistributedFiller implements ChunkFiller {
         int totalBlocks = blocks.size();
         bust.setTotalBlocks(totalBlocks);
 
-        if(totalBlocks > 0) {
-            runnable.runTaskTimer(ChunkBuster.getInstance(), 20L * bust.getDelayBeforeStart(), 1L);
-        }else{
-            bust.end();
-        }
+        runnable.runTaskTimer(ChunkBuster.getInstance(), 20L * bust.getDelayBeforeStart(), 1L);
     }
 
     private List<Block> getBlocks(Chunk chunk) {
@@ -48,8 +44,8 @@ public class DistributedFiller implements ChunkFiller {
         int minX = cx * 16;
         int minZ = cz * 16;
 
-        int maxX = cx < 0 ? validate(cx, (minX + 15) - 1) : minX + 15;
-        int maxZ = cz < 0 ? validate(cz, (minZ + 15) - 1) : minZ + 15;
+        int maxX = cx < 0 ? validate(cx, (minX + 16) - 1) : minX + 16;
+        int maxZ = cz < 0 ? validate(cz, (minZ + 16) - 1) : minZ + 16;
 
         int minY = bust.getMinHeight();
         int maxY = bust.getMaxHeight();
