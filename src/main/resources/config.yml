@@ -21,6 +21,6 @@ SETTINGS:
   COOLDOWN: 10 #Cooldown time in seconds (0 or -1 to disable)
   DELAY_BEFORE_START: 5 #Delay in seconds (0 to disable)
   MESSAGES:
-    FINISH: "&c&lChunkBuster &8➼ &7Your ChunkBuster at (%x%, %z%) has been finished. (%time% seconds)"
+    FINISH: "&c&lChunkBuster &8➼ &7Your ChunkBuster at (%x%, %z%) has been finished. (%time% seconds, %totalBlocks% blocks)"
     START: "&c&lChunkBuster &8➼ &7Your ChunkBuster task is now starting. You have &c5 &7seconds to find a safe location."
     COOLDOWN: "&c&lChunkBuster &8➼ &cYou cannot place another ChunkBuster for %cooldown% second%context%." #Context adds 's' if seconds equals to 0 or higher than 1

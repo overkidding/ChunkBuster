@@ -1,5 +1,6 @@
 package me.overkidding.chunkbuster.modules;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import me.overkidding.chunkbuster.ChunkBuster;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class ChunkBust {
 
-    @Setter private static FileConfiguration configuration = ChunkBuster.getInstance().getConfig();
+    @Getter private final static FileConfiguration configuration = ChunkBuster.getInstance().getConfig();
     private static final List<Pair<Integer, Integer>> currentChunkBusts = new ArrayList<>();
     private final Map<UUID, Long> coolDowns = new HashMap<>();
 
@@ -29,7 +30,9 @@ public class ChunkBust {
 
     private long start = -1, end = -1;
 
-    private final WorkloadRunnable runnable = new WorkloadRunnable(configuration.getDouble("SETTINGS.MAX_MILLIS_PER_TICK"), this);
+    @Setter private int totalBlocks;
+
+    @Getter private final WorkloadRunnable runnable = new WorkloadRunnable(configuration.getDouble("SETTINGS.MAX_MILLIS_PER_TICK"), this);
 
     public void start(){
         ChunkBustPreStartEvent preStartEvent = new ChunkBustPreStartEvent(player, clicked, chunk);
@@ -62,7 +65,7 @@ public class ChunkBust {
         handItem.setAmount(handItem.getAmount() - 1);
         player.setItemInHand(handItem);
         start = System.currentTimeMillis();
-        new DistributedFiller(runnable, configuration).fill(chunk, Material.AIR);
+        new DistributedFiller(this).fill(chunk, Material.AIR);
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', configuration.getString("SETTINGS.MESSAGES.START")));
     }
 
@@ -74,7 +77,8 @@ public class ChunkBust {
                 configuration.getString("SETTINGS.MESSAGES.FINISH")
                         .replace("%x%", clicked.getBlockX()+"")
                         .replace("%z%", clicked.getBlockZ() + "")
-                        .replace("%time%", TimeUnit.MILLISECONDS.toSeconds(end - start) + "")
+                        .replace("%totalBlocks%", totalBlocks + "")
+                        .replace("%time%", (TimeUnit.MILLISECONDS.toSeconds(end - start) - configuration.getInt("SETTINGS.DELAY_BEFORE_START")) + "")
         ));
     }
 
