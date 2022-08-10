@@ -29,7 +29,7 @@ public class ChunkBust {
 
     private long start = -1, end = -1;
 
-    private final WorkloadRunnable runnable = new WorkloadRunnable(configuration.getInt("SETTINGS.MAX_MILLIS_PER_TICK"), this);
+    private final WorkloadRunnable runnable = new WorkloadRunnable(configuration.getDouble("SETTINGS.MAX_MILLIS_PER_TICK"), this);
 
     public void start(){
         ChunkBustPreStartEvent preStartEvent = new ChunkBustPreStartEvent(player, clicked, chunk);

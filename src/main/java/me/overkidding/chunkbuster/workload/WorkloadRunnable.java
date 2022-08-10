@@ -22,7 +22,7 @@ public class WorkloadRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        double stopTime = System.nanoTime() + (MAX_MILLIS_PER_TICK * 1E6);
+        long stopTime = (long) (System.nanoTime() + (MAX_MILLIS_PER_TICK * 1E6));
 
         Workload nextLoad;
 
